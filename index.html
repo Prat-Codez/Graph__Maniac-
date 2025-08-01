@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,47 +12,68 @@
             font-family: 'Inter', sans-serif;
             overflow: hidden;
         }
+
         .equation-list-container {
             overflow-x: hidden !important;
             padding-right: 8px;
         }
+
         .equation-list-container::-webkit-scrollbar {
             width: 8px;
         }
+
         .equation-list-container::-webkit-scrollbar-track {
             background: #2d3748;
             border-radius: 10px;
         }
+
         .equation-list-container::-webkit-scrollbar-thumb {
             background: #4a5568;
             border-radius: 10px;
         }
+
         .equation-list-container::-webkit-scrollbar-thumb:hover {
             background: #6b7280;
         }
+
         .glow-link {
             color: #60A5FA;
             transition: color 0.3s ease-in-out;
             will-change: transform, color;
         }
+
         .animate-glow {
             animation: wavyGlow 1.5s forwards;
         }
+
         @keyframes wavyGlow {
-            0% { color: #60A5FA; transform: translateY(0); }
-            50% { color: #93C5FD; transform: translateY(-2px); }
-            100% { color: #60A5FA; transform: translateY(0); }
+            0% {
+                color: #60A5FA;
+                transform: translateY(0);
+            }
+
+            50% {
+                color: #93C5FD;
+                transform: translateY(-2px);
+            }
+
+            100% {
+                color: #60A5FA;
+                transform: translateY(0);
+            }
         }
+
         canvas {
             cursor: grab;
         }
     </style>
 </head>
+
 <body class="flex h-screen bg-gray-900 text-gray-100">
 
     <div class="w-full md:w-1/3 p-6 bg-gray-800 flex flex-col shadow-lg overflow-hidden">
         <h1 class="text-3xl font-bold text-center mb-6 glow-link">Graph Maniac!</h1>
-        <p class="text-sm text-center mb-6 text-gray-400">Enter equations like `y = x**2` or `x = sin(y)`. Use `^` for exponentiation.</p>
+        <p class="text-sm text-center mb-6 text-gray-400">Enter equations like `y = x^2` or `x = sin(y)`. Use `^` for exponentiation.</p>
 
         <div id="equation-list" class="flex-grow overflow-y-scroll equation-list-container">
             <div id="empty-list-message" class="text-center text-gray-500 mt-10 p-4 rounded-lg bg-gray-700 hidden">
@@ -59,9 +81,13 @@
             </div>
         </div>
 
-        <button id="add-equation-btn" 
-                class="mt-6 w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
-            <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+        <button id="add-equation-btn"
+            class="mt-6 w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
+            <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+                </path>
+            </svg>
             Add Equation
         </button>
     </div>
@@ -69,370 +95,421 @@
     <div class="w-full md:w-2/3 relative flex flex-col items-center justify-center bg-gray-900">
         <div class="absolute top-0 left-0 w-full p-4 bg-gray-800 text-center shadow-md z-10">
             <p class="text-lg font-semibold text-gray-300 mb-1">
-                Made by 
+                Made by
                 <a href="https://github.com/Prat-Codez" target="_blank" class="hover:text-blue-300 glow-link">Prat-Codez</a>
             </p>
             <p class="text-sm text-gray-400">
-                Checkout more Projects: <a href="http://github.com/Prat-Codez" target="_blank" class="text-blue-400 hover:text-blue-300 transition-colors duration-200">http://github.com/Prat-Codez</a>
+                Checkout more Projects: <a href="http://github.com/Prat-Codez" target="_blank"
+                    class="text-blue-400 hover:text-blue-300 transition-colors duration-200">http://github.com/Prat-Codez</a>
             </p>
         </div>
 
         <canvas id="graphCanvas" class="w-full h-full bg-gray-900"></canvas>
 
         <div class="absolute bottom-4 right-4 flex flex-col space-y-2">
-            <button id="zoom-in-btn" 
-                    class="p-3 bg-gray-700 hover:bg-gray-600 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 glow-link">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            <button id="zoom-in-btn"
+                class="p-3 bg-gray-700 hover:bg-gray-600 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 glow-link">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
             </button>
-            <button id="zoom-out-btn" 
-                    class="p-3 bg-gray-700 hover:bg-gray-600 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 glow-link">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+            <button id="zoom-out-btn"
+                class="p-3 bg-gray-700 hover:bg-gray-600 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 glow-link">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                </svg>
             </button>
         </div>
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Get the canvas element and its 2D drawing context
-        const canvas = document.getElementById('graphCanvas');
-        const ctx = canvas.getContext('2d');
-        const emptyListMessage = document.getElementById('empty-list-message');
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('graphCanvas');
+            const ctx = canvas.getContext('2d');
+            const emptyListMessage = document.getElementById('empty-list-message');
 
-        // Define the initial range for the graph's X and Y axes
-        let xMin = -10;
-        let xMax = 10;
-        let yMin = -10;
-        let yMax = 10;
+            let xMin = -10;
+            let xMax = 10;
+            let yMin = -10;
+            let yMax = 10;
+            const initialRange = { xMin: -10, xMax: 10, yMin: -10, yMax: 10 };
 
-        // Array to store all the equations being plotted
-        let equations = []; 
+            let equations = [];
+            const plotColors = ['#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', '#6EE7B7'];
 
-        // Colors used for plotting different equations
-        const plotColors = ['#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', '#6EE7B7'];
+            let isPanning = false;
+            let lastPanX, lastPanY;
 
-        // Variables for handling graph panning (dragging)
-        let isPanning = false;
-        let lastPanX, lastPanY;
+            // Whitelist of allowed Math functions for security
+            const allowedMath = {
+                'sin': Math.sin, 'cos': Math.cos, 'tan': Math.tan,
+                'asin': Math.asin, 'acos': Math.acos, 'atan': Math.atan,
+                'sqrt': Math.sqrt, 'cbrt': Math.cbrt, 'exp': Math.exp,
+                'log': Math.log, 'log10': Math.log10, 'log2': Math.log2,
+                'abs': Math.abs, 'ceil': Math.ceil, 'floor': Math.floor,
+                'round': Math.round, 'min': Math.min, 'max': Math.max,
+                'pow': Math.pow, 'PI': Math.PI, 'E': Math.E
+            };
 
-        // Whitelist of allowed Math functions for security
-        const allowedMath = {
-            'sin': Math.sin, 'cos': Math.cos, 'tan': Math.tan,
-            'asin': Math.asin, 'acos': Math.acos, 'atan': Math.atan,
-            'sqrt': Math.sqrt, 'cbrt': Math.cbrt, 'exp': Math.exp,
-            'log': Math.log, 'log10': Math.log10, 'log2': Math.log2,
-            'abs': Math.abs, 'ceil': Math.ceil, 'floor': Math.floor, 
-            'round': Math.round, 'min': Math.min, 'max': Math.max, 
-            'pow': Math.pow, 'PI': Math.PI, 'E': Math.E
-        };
+            // Debounce function to limit how often a function is called
+            const debounce = (func, delay) => {
+                let timeoutId;
+                return (...args) => {
+                    clearTimeout(timeoutId);
+                    timeoutId = setTimeout(() => func(...args), delay);
+                };
+            };
 
-        // ### Core Functions ###
+            // ### Core Functions ###
 
-        function init() {
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
+            function init() {
+                resizeCanvas();
+                setupEventListeners();
+                addEquationInput('y = sin(x)');
+                addEquationInput('y = x^2');
+                drawGraph();
+            }
 
-            addEquationInput('y = sin(x)');
-            addEquationInput('y = x^2');
-            
-            document.getElementById('add-equation-btn').addEventListener('click', () => addEquationInput());
-            document.getElementById('zoom-in-btn').addEventListener('click', () => handleZoom(0.8));
-            document.getElementById('zoom-out-btn').addEventListener('click', () => handleZoom(1.25));
+            function setupEventListeners() {
+                document.getElementById('add-equation-btn').addEventListener('click', () => addEquationInput());
+                document.getElementById('zoom-in-btn').addEventListener('click', () => handleZoom(0.8));
+                document.getElementById('zoom-out-btn').addEventListener('click', () => handleZoom(1.25));
 
-            canvas.addEventListener('mousedown', startPan);
-            canvas.addEventListener('mousemove', pan);
-            canvas.addEventListener('mouseup', endPan);
-            canvas.addEventListener('mouseout', endPan);
-            canvas.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                const zoomFactor = e.deltaY < 0 ? 0.9 : 1.1;
-                handleZoom(zoomFactor, e.offsetX, e.offsetY);
-            });
+                canvas.addEventListener('mousedown', startPan);
+                canvas.addEventListener('mousemove', pan);
+                canvas.addEventListener('mouseup', endPan);
+                canvas.addEventListener('mouseout', endPan);
+                canvas.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const zoomFactor = e.deltaY < 0 ? 0.9 : 1.1;
+                    handleZoom(zoomFactor, e.offsetX, e.offsetY);
+                });
 
-            window.addEventListener('resize', () => {
+                window.addEventListener('resize', () => {
+                    resizeCanvas();
+                    drawGraph();
+                });
+
+                setupSinglePlayGlowAnimation();
+            }
+
+            function resizeCanvas() {
                 canvas.width = canvas.offsetWidth;
                 canvas.height = canvas.offsetHeight;
-                drawGraph();
-            });
+            }
 
-            setupSinglePlayGlowAnimation();
-            drawGraph();
-        }
+            function drawGraph() {
+                requestAnimationFrame(() => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    drawGridAndAxes();
 
-        function drawGraph() {
-            requestAnimationFrame(() => {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                drawGridAndAxes();
-                
-                equations.forEach(eq => {
-                    if (eq.errorElement) eq.errorElement.textContent = '';
-                    plotEquation(eq.value, eq.color, eq.errorElement);
+                    equations.forEach(eq => {
+                        if (eq.errorElement) eq.errorElement.textContent = '';
+                        plotEquation(eq.value, eq.color, eq.errorElement);
+                    });
+
+                    emptyListMessage.classList.toggle('hidden', equations.length > 0);
                 });
-                
-                emptyListMessage.classList.toggle('hidden', equations.length > 0);
-            });
-        }
-        
-        // ### Event Handlers for Panning and Zooming ###
+            }
 
-        function handleZoom(factor, mouseX, mouseY) {
-            const centerX = mouseX ? toMathX(mouseX) : (xMin + xMax) / 2;
-            const centerY = mouseY ? toMathY(mouseY) : (yMin + yMax) / 2;
+            // ### Event Handlers for Panning and Zooming ###
 
-            xMin = centerX + (xMin - centerX) * factor;
-            xMax = centerX + (xMax - centerX) * factor;
-            yMin = centerY + (yMin - centerY) * factor;
-            yMax = centerY + (yMax - centerY) * factor;
+            function handleZoom(factor, mouseX, mouseY) {
+                const centerX = mouseX ? toMathX(mouseX) : (xMin + xMax) / 2;
+                const centerY = mouseY ? toMathY(mouseY) : (yMin + yMax) / 2;
 
-            drawGraph();
-        }
+                xMin = centerX + (xMin - centerX) * factor;
+                xMax = centerX + (xMax - centerX) * factor;
+                yMin = centerY + (yMin - centerY) * factor;
+                yMax = centerY + (yMax - centerY) * factor;
 
-        function startPan(e) {
-            isPanning = true;
-            lastPanX = e.offsetX;
-            lastPanY = e.offsetY;
-            canvas.style.cursor = 'grabbing';
-        }
-
-        function pan(e) {
-            if (!isPanning) return;
-            const dx = toMathX(e.offsetX) - toMathX(lastPanX);
-            const dy = toMathY(e.offsetY) - toMathY(lastPanY);
-
-            xMin -= dx;
-            xMax -= dx;
-            yMin -= dy;
-            yMax -= dy;
-
-            lastPanX = e.offsetX;
-            lastPanY = e.offsetY;
-            drawGraph();
-        }
-
-        function endPan() {
-            isPanning = false;
-            canvas.style.cursor = 'grab';
-        }
-
-        // ### Equation Management ###
-
-        function addEquationInput(initialValue = '') {
-            const equationList = document.getElementById('equation-list');
-            const eqId = `eq-${Date.now()}`;
-            const color = plotColors[equations.length % plotColors.length];
-
-            const wrapper = document.createElement('div');
-            wrapper.id = `wrapper-${eqId}`;
-            wrapper.className = 'relative group mb-3';
-            
-            const newEquationDiv = document.createElement('div');
-            newEquationDiv.className = 'flex items-center p-2 bg-gray-700 rounded-lg shadow-sm transition duration-200 ease-in-out transform group-hover:scale-[1.02]';
-
-            const colorDot = document.createElement('span');
-            colorDot.className = 'w-4 h-4 rounded-full mr-3 ml-2 flex-shrink-0';
-            colorDot.style.backgroundColor = color;
-
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'flex-grow bg-transparent focus:outline-none text-gray-100 placeholder-gray-400';
-            input.placeholder = 'e.g., y = x^2';
-            input.value = initialValue;
-
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'ml-2 p-1 text-gray-500 hover:text-red-400 transition-colors duration-200 opacity-0 group-hover:opacity-100';
-            deleteBtn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>`;
-
-            const errorMsg = document.createElement('p');
-            errorMsg.className = 'text-red-400 text-xs mt-1 ml-9';
-
-            newEquationDiv.appendChild(colorDot);
-            newEquationDiv.appendChild(input);
-            newEquationDiv.appendChild(deleteBtn);
-            wrapper.appendChild(newEquationDiv);
-            wrapper.appendChild(errorMsg);
-            equationList.appendChild(wrapper);
-
-            const eqData = { id: eqId, input, value: initialValue, color, errorElement: errorMsg };
-            equations.push(eqData);
-
-            input.addEventListener('input', () => {
-                eqData.value = input.value;
                 drawGraph();
-            });
+            }
 
-            deleteBtn.addEventListener('click', () => {
-                equations = equations.filter(e => e.id !== eqId);
-                wrapper.remove();
+            function startPan(e) {
+                isPanning = true;
+                lastPanX = e.offsetX;
+                lastPanY = e.offsetY;
+                canvas.style.cursor = 'grabbing';
+            }
+
+            function pan(e) {
+                if (!isPanning) return;
+                const dx = toMathX(e.offsetX) - toMathX(lastPanX);
+                const dy = toMathY(e.offsetY) - toMathY(lastPanY);
+
+                xMin -= dx;
+                xMax -= dx;
+                yMin -= dy;
+                yMax -= dy;
+
+                lastPanX = e.offsetX;
+                lastPanY = e.offsetY;
                 drawGraph();
-            });
-            
-            drawGraph();
-        }
-
-        // ### Drawing & Plotting Logic ###
-
-        function drawGridAndAxes() {
-            const xStep = getNiceStep(xMin, xMax, 10);
-            const yStep = getNiceStep(yMin, yMax, 10);
-
-            ctx.strokeStyle = '#2D3748';
-            ctx.lineWidth = 0.5;
-            for (let i = Math.ceil(xMin / xStep) * xStep; i <= xMax; i += xStep) {
-                ctx.beginPath();
-                ctx.moveTo(toCanvasX(i), 0);
-                ctx.lineTo(toCanvasX(i), canvas.height);
-                ctx.stroke();
-            }
-            for (let i = Math.ceil(yMin / yStep) * yStep; i <= yMax; i += yStep) {
-                ctx.beginPath();
-                ctx.moveTo(0, toCanvasY(i));
-                ctx.lineTo(canvas.width, toCanvasY(i));
-                ctx.stroke();
             }
 
-            ctx.strokeStyle = '#A0AEC0';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(toCanvasX(0), 0);
-            ctx.lineTo(toCanvasX(0), canvas.height);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(0, toCanvasY(0));
-            ctx.lineTo(canvas.width, toCanvasY(0));
-            ctx.stroke();
-
-            ctx.fillStyle = '#A0AEC0';
-            ctx.font = '12px Inter';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'top';
-            for (let i = Math.ceil(xMin / xStep) * xStep; i <= xMax; i += xStep) {
-                if (Math.abs(i) < 1e-9) continue;
-                const label = Number.isInteger(i) ? i : i.toFixed(getPrecision(xStep));
-                ctx.fillText(label, toCanvasX(i), toCanvasY(0) + 5);
-            }
-            ctx.textAlign = 'left';
-            ctx.textBaseline = 'middle';
-            for (let i = Math.ceil(yMin / yStep) * yStep; i <= yMax; i += yStep) {
-                if (Math.abs(i) < 1e-9) continue;
-                const label = Number.isInteger(i) ? i : i.toFixed(getPrecision(yStep));
-                ctx.fillText(label, toCanvasX(0) + 5, toCanvasY(i));
+            function endPan() {
+                isPanning = false;
+                canvas.style.cursor = 'grab';
             }
 
-            if (xMin <= 0 && xMax >= 0 && yMin <= 0 && yMax >= 0) {
-                 ctx.fillText('0', toCanvasX(0) + 5, toCanvasY(0) + 12);
+            // ### Equation Management ###
+
+            function addEquationInput(initialValue = '') {
+                const equationList = document.getElementById('equation-list');
+                const eqId = `eq-${Date.now()}`;
+                const color = plotColors[equations.length % plotColors.length];
+
+                const wrapper = document.createElement('div');
+                wrapper.id = `wrapper-${eqId}`;
+                wrapper.className = 'relative group mb-3';
+
+                const newEquationDiv = document.createElement('div');
+                newEquationDiv.className = 'flex items-center p-2 bg-gray-700 rounded-lg shadow-sm transition duration-200 ease-in-out transform group-hover:scale-[1.02]';
+
+                const colorDot = document.createElement('span');
+                colorDot.className = 'w-4 h-4 rounded-full mr-3 ml-2 flex-shrink-0';
+                colorDot.style.backgroundColor = color;
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'flex-grow bg-transparent focus:outline-none text-gray-100 placeholder-gray-400';
+                input.placeholder = 'e.g., y = x^2';
+                input.value = initialValue;
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'ml-2 p-1 text-gray-500 hover:text-red-400 transition-colors duration-200 opacity-0 group-hover:opacity-100';
+                deleteBtn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>`;
+
+                const errorMsg = document.createElement('p');
+                errorMsg.className = 'text-red-400 text-xs mt-1 ml-9';
+
+                newEquationDiv.appendChild(colorDot);
+                newEquationDiv.appendChild(input);
+                newEquationDiv.appendChild(deleteBtn);
+                wrapper.appendChild(newEquationDiv);
+                wrapper.appendChild(errorMsg);
+                equationList.appendChild(wrapper);
+
+                const eqData = { id: eqId, input, value: initialValue, color, errorElement: errorMsg };
+                equations.push(eqData);
+
+                const debouncedDraw = debounce(drawGraph, 300);
+                input.addEventListener('input', () => {
+                    eqData.value = input.value;
+                    debouncedDraw();
+                });
+
+                deleteBtn.addEventListener('click', () => {
+                    equations = equations.filter(e => e.id !== eqId);
+                    wrapper.remove();
+                    drawGraph();
+                });
+
+                drawGraph();
             }
-        }
 
-        function plotEquation(eqStr, color, errorElement) {
-            if (!eqStr) return;
+            // ### Drawing & Plotting Logic ###
 
-            try {
-                let sanitizedStr = eqStr.replace(/\s+/g, '').replace(/\^/g, '**');
-                
-                for (const func in allowedMath) {
-                    sanitizedStr = sanitizedStr.replace(new RegExp(`\\b${func}\\b`, 'gi'), `allowedMath['${func}']`);
+            function drawGridAndAxes() {
+                const xStep = getNiceStep(xMin, xMax, 10);
+                const yStep = getNiceStep(yMin, yMax, 10);
+
+                ctx.strokeStyle = '#2D3748';
+                ctx.lineWidth = 0.5;
+                for (let i = Math.ceil(xMin / xStep) * xStep; i <= xMax; i += xStep) {
+                    ctx.beginPath();
+                    ctx.moveTo(toCanvasX(i), 0);
+                    ctx.lineTo(toCanvasX(i), canvas.height);
+                    ctx.stroke();
+                }
+                for (let i = Math.ceil(yMin / yStep) * yStep; i <= yMax; i += yStep) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, toCanvasY(i));
+                    ctx.lineTo(canvas.width, toCanvasY(i));
+                    ctx.stroke();
                 }
 
-                if (/[^a-zA-Z0-9\s()+\-*/.,='[\]_]/.test(sanitizedStr)) {
-                    throw new Error("Invalid characters in equation.");
+                ctx.strokeStyle = '#A0AEC0';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(0), 0);
+                ctx.lineTo(toCanvasX(0), canvas.height);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(0, toCanvasY(0));
+                ctx.lineTo(canvas.width, toCanvasY(0));
+                ctx.stroke();
+
+                ctx.fillStyle = '#A0AEC0';
+                ctx.font = '12px Inter';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'top';
+                for (let i = Math.ceil(xMin / xStep) * xStep; i <= xMax; i += xStep) {
+                    if (Math.abs(i) < 1e-9) continue;
+                    const label = Number.isInteger(i) ? i : i.toFixed(getPrecision(xStep));
+                    ctx.fillText(label, toCanvasX(i), toCanvasY(0) + 5);
+                }
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                for (let i = Math.ceil(yMin / yStep) * yStep; i <= yMax; i += yStep) {
+                    if (Math.abs(i) < 1e-9) continue;
+                    const label = Number.isInteger(i) ? i : i.toFixed(getPrecision(yStep));
+                    ctx.fillText(label, toCanvasX(0) + 5, toCanvasY(i));
                 }
 
-                ctx.strokeStyle = color;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                
-                const parts = sanitizedStr.split('=');
-                if (parts.length !== 2) throw new Error("Equation must have one '='.");
+                if (xMin <= 0 && xMax >= 0 && yMin <= 0 && yMax >= 0) {
+                    ctx.fillText('0', toCanvasX(0) + 5, toCanvasY(0) + 12);
+                }
+            }
 
-                const lhs = parts[0];
-                const rhs = parts[1];
+            function plotEquation(eqStr, color, errorElement) {
+                if (!eqStr) return;
 
-                if (lhs === 'y') {
-                    const func = new Function('x', 'allowedMath', `return ${rhs}`);
-                    let firstPoint = true;
-                    for (let px = 0; px <= canvas.width; px++) {
-                        const x = toMathX(px);
-                        const y = func(x, allowedMath);
-                        if (isNaN(y) || !isFinite(y)) { firstPoint = true; continue; }
-                        
-                        const py = toCanvasY(y);
-                        if (firstPoint) {
-                            ctx.moveTo(px, py);
-                            firstPoint = false;
-                        } else {
-                            ctx.lineTo(px, py);
-                        }
+                try {
+                    let sanitizedStr = eqStr.replace(/\s+/g, '').replace(/\^/g, '**');
+
+                    // Check for invalid characters first
+                    if (/[^a-zA-Z0-9\s()+\-*/.,='[\]_]/.test(sanitizedStr)) {
+                        throw new Error("Invalid characters in equation.");
                     }
-                } else if (lhs === 'x') {
-                    const func = new Function('y', 'allowedMath', `return ${rhs}`);
-                    let firstPoint = true;
-                    for (let py = 0; py <= canvas.height; py++) {
-                        const y = toMathY(py);
-                        const x = func(y, allowedMath);
-                        if (isNaN(x) || !isFinite(x)) { firstPoint = true; continue; }
-                        
-                        const px = toCanvasX(x);
-                        if (firstPoint) {
-                            ctx.moveTo(px, py);
-                            firstPoint = false;
-                        } else {
-                            ctx.lineTo(px, py);
-                        }
+
+                    // Replace allowed functions with a secure reference
+                    for (const func in allowedMath) {
+                        const regex = new RegExp(`\\b${func}\\b`, 'g');
+                        sanitizedStr = sanitizedStr.replace(regex, `allowedMath['${func}']`);
                     }
-                } else {
-                     throw new Error("Equation must be in the form y = f(x) or x = f(y).");
-                }
-                
-                ctx.stroke();
 
-            } catch (e) {
-                if (errorElement) {
-                    errorElement.textContent = e.message.includes('f(x)') || e.message.includes('f(y)') 
-                        ? e.message 
-                        : `Syntax Error`;
+                    const parts = sanitizedStr.split('=');
+                    if (parts.length !== 2) throw new Error("Equation must have one '='.");
+
+                    const lhs = parts[0];
+                    const rhs = parts[1];
+
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+
+                    if (lhs === 'y') {
+                        const func = new Function('x', 'allowedMath', `return ${rhs}`);
+                        let firstPoint = true;
+                        for (let px = 0; px <= canvas.width; px++) {
+                            const x = toMathX(px);
+                            let y;
+                            try {
+                                y = func(x, allowedMath);
+                            } catch (e) {
+                                // Ignore errors from function evaluation (e.g., log(-1))
+                                firstPoint = true;
+                                continue;
+                            }
+
+                            if (isNaN(y) || !isFinite(y)) {
+                                firstPoint = true;
+                                continue;
+                            }
+
+                            const py = toCanvasY(y);
+                            if (firstPoint) {
+                                ctx.moveTo(px, py);
+                                firstPoint = false;
+                            } else {
+                                // Add check for large jumps (asymptotes)
+                                if (Math.abs(py - toCanvasY(func(toMathX(px - 1), allowedMath))) > canvas.height / 2) {
+                                    ctx.moveTo(px, py);
+                                } else {
+                                    ctx.lineTo(px, py);
+                                }
+                            }
+                        }
+                    } else if (lhs === 'x') {
+                        const func = new Function('y', 'allowedMath', `return ${rhs}`);
+                        let firstPoint = true;
+                        for (let py = 0; py <= canvas.height; py++) {
+                            const y = toMathY(py);
+                            let x;
+                            try {
+                                x = func(y, allowedMath);
+                            } catch (e) {
+                                firstPoint = true;
+                                continue;
+                            }
+
+                            if (isNaN(x) || !isFinite(x)) {
+                                firstPoint = true;
+                                continue;
+                            }
+
+                            const px = toCanvasX(x);
+                            if (firstPoint) {
+                                ctx.moveTo(px, py);
+                                firstPoint = false;
+                            } else {
+                                // Add check for large jumps
+                                if (Math.abs(px - toCanvasX(func(toMathY(py - 1), allowedMath))) > canvas.width / 2) {
+                                    ctx.moveTo(px, py);
+                                } else {
+                                    ctx.lineTo(px, py);
+                                }
+                            }
+                        }
+                    } else {
+                        throw new Error("Equation must be in the form y = f(x) or x = f(y).");
+                    }
+
+                    ctx.stroke();
+
+                } catch (e) {
+                    if (errorElement) {
+                        errorElement.textContent = e.message.includes('f(x)') || e.message.includes('f(y)')
+                            ? e.message
+                            : `Syntax Error: ${e.message}`;
+                    }
                 }
             }
-        }
 
-        // ### Utility Functions ###
+            // ### Utility Functions ###
 
-        function toCanvasX(mathX) { return (mathX - xMin) / (xMax - xMin) * canvas.width; }
-        function toCanvasY(mathY) { return canvas.height - (mathY - yMin) / (yMax - yMin) * canvas.height; }
-        function toMathX(canvasX) { return canvasX / canvas.width * (xMax - xMin) + xMin; }
-        function toMathY(canvasY) { return (canvas.height - canvasY) / canvas.height * (yMax - yMin) + yMin; }
+            function toCanvasX(mathX) { return (mathX - xMin) / (xMax - xMin) * canvas.width; }
+            function toCanvasY(mathY) { return canvas.height - (mathY - yMin) / (yMax - yMin) * canvas.height; }
+            function toMathX(canvasX) { return canvasX / canvas.width * (xMax - xMin) + xMin; }
+            function toMathY(canvasY) { return (canvas.height - canvasY) / canvas.height * (yMax - yMin) + yMin; }
 
-        function getNiceStep(min, max, numTicks) {
-            const range = max - min;
-            if (range === 0) return 1;
-            const roughStep = range / numTicks;
-            const exponent = Math.floor(Math.log10(roughStep));
-            const powerOf10 = Math.pow(10, exponent);
-            const niceMultiples = [1, 2, 2.5, 5, 10];
-            for (const m of niceMultiples) {
-                const step = m * powerOf10;
-                if (range / step < numTicks * 1.5) return step;
+            function getNiceStep(min, max, numTicks) {
+                const range = max - min;
+                if (range === 0) return 1;
+                const roughStep = range / numTicks;
+                const exponent = Math.floor(Math.log10(roughStep));
+                const powerOf10 = Math.pow(10, exponent);
+                const niceMultiples = [1, 2, 2.5, 5, 10];
+                for (const m of niceMultiples) {
+                    const step = m * powerOf10;
+                    if (range / step < numTicks * 1.5) return step;
+                }
+                return niceMultiples[0] * powerOf10;
             }
-            return niceMultiples[0] * powerOf10;
-        }
 
-        function getPrecision(step) {
-            const s = String(step);
-            return s.includes('.') ? s.split('.')[1].length : 0;
-        }
-        
-        function setupSinglePlayGlowAnimation() {
-            document.querySelectorAll('.glow-link').forEach(element => {
-                element.addEventListener('mouseenter', () => {
-                    element.classList.add('animate-glow');
-                });
-                element.addEventListener('animationend', () => {
-                    element.classList.remove('animate-glow');
-                });
-            });
-        }
+            function getPrecision(step) {
+                const s = String(step);
+                return s.includes('.') ? s.split('.')[1].length : 0;
+            }
 
-        // Start the application
-        init();
-    });
+            function setupSinglePlayGlowAnimation() {
+                document.querySelectorAll('.glow-link').forEach(element => {
+                    element.addEventListener('mouseenter', () => {
+                        element.classList.add('animate-glow');
+                    });
+                    element.addEventListener('animationend', () => {
+                        element.classList.remove('animate-glow');
+                    });
+                });
+            }
+
+            init();
+        });
     </script>
 </body>
+
 </html>
