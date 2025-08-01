@@ -4,106 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graph-Maniac</title>
-    <!-- Tailwind CSS CDN - This links to the Tailwind CSS library for easy styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter - This imports the 'Inter' font for a clean look -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Basic styling for the body of the page */
         body {
-            font-family: 'Inter', sans-serif; /* Use the imported Inter font */
-            overflow: hidden; /* Prevents scrollbars on the main page */
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
         }
-
-        /* Custom scrollbar styles for the equation list area */
         .equation-list-container {
-            overflow-x: hidden !important; /* Hides horizontal scrollbar */
-            padding-right: 8px; /* Adds space for the vertical scrollbar */
+            overflow-x: hidden !important;
+            padding-right: 8px;
         }
-
-        /* Styles for the scrollbar itself */
         .equation-list-container::-webkit-scrollbar {
-            width: 8px; /* Width of the scrollbar */
+            width: 8px;
         }
-
-        /* Styles for the scrollbar track (the background part) */
         .equation-list-container::-webkit-scrollbar-track {
-            background: #2d3748; /* Dark gray background */
-            border-radius: 10px; /* Rounded corners for the track */
+            background: #2d3748;
+            border-radius: 10px;
         }
-
-        /* Styles for the scrollbar thumb (the draggable part) */
         .equation-list-container::-webkit-scrollbar-thumb {
-            background: #4a5568; /* Slightly lighter gray */
-            border-radius: 10px; /* Rounded corners for the thumb */
+            background: #4a5568;
+            border-radius: 10px;
         }
-
-        /* Style when hovering over the scrollbar thumb */
         .equation-list-container::-webkit-scrollbar-thumb:hover {
-            background: #6b7280; /* Even lighter gray on hover */
+            background: #6b7280;
         }
-        
-        /* Base style for elements that will have a glowing animation */
         .glow-link {
-            color: #60A5FA; /* Initial blue-400 color for the text, consistent with Tailwind */
-            transition: color 0.3s ease-in-out; /* Smooth color transition */
-            will-change: transform, color; /* Hints to the browser for performance optimization */
+            color: #60A5FA;
+            transition: color 0.3s ease-in-out;
+            will-change: transform, color;
         }
-
-        /* This class triggers the animation to play once */
         .animate-glow {
-            animation: wavyGlow 1.5s forwards; /* Apply the wavyGlow animation for 1.5 seconds and stay at the end state */
+            animation: wavyGlow 1.5s forwards;
         }
-
-        /* Keyframes for the wavy glowing animation */
         @keyframes wavyGlow {
-            0% {
-                color: #60A5FA; /* Start with blue-400 */
-                transform: translateY(0); /* Start at original vertical position */
-            }
-            50% {
-                color: #93C5FD; /* Change to blue-300 (lighter blue) at the animation's peak */
-                transform: translateY(-2px); /* Move slightly up for a wavy effect */
-            }
-            100% {
-                color: #60A5FA; /* Return to blue-400 */
-                transform: translateY(0); /* Return to original vertical position */
-            }
+            0% { color: #60A5FA; transform: translateY(0); }
+            50% { color: #93C5FD; transform: translateY(-2px); }
+            100% { color: #60A5FA; transform: translateY(0); }
+        }
+        canvas {
+            cursor: grab;
         }
     </style>
 </head>
 <body class="flex h-screen bg-gray-900 text-gray-100">
 
-    <!-- Left Panel: Where users input equations -->
     <div class="w-full md:w-1/3 p-6 bg-gray-800 flex flex-col shadow-lg overflow-hidden">
-        <!-- Main title of the application with the glow animation -->
         <h1 class="text-3xl font-bold text-center mb-6 glow-link">Graph Maniac!</h1>
         <p class="text-sm text-center mb-6 text-gray-400">Enter equations like `y = x**2` or `x = sin(y)`. Use `^` for exponentiation.</p>
 
-        <!-- Container for all equation input fields -->
         <div id="equation-list" class="flex-grow overflow-y-scroll equation-list-container">
-            <!-- Message shown when no equations are added yet -->
             <div id="empty-list-message" class="text-center text-gray-500 mt-10 p-4 rounded-lg bg-gray-700 hidden">
                 No equations added yet! Click "Add Equation" to get started.
             </div>
         </div>
 
-        <!-- Button to add new equation input fields -->
         <button id="add-equation-btn" 
                 class="mt-6 w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
-            <!-- Plus icon for the button -->
             <svg class="inline-block w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
             Add Equation
         </button>
     </div>
 
-    <!-- Right Panel: Where the graph is drawn -->
     <div class="w-full md:w-2/3 relative flex flex-col items-center justify-center bg-gray-900">
-        <!-- Title bar for the right side, including author info -->
         <div class="absolute top-0 left-0 w-full p-4 bg-gray-800 text-center shadow-md z-10">
             <p class="text-lg font-semibold text-gray-300 mb-1">
                 Made by 
-                <!-- Author's GitHub link with the glow animation -->
                 <a href="https://github.com/Prat-Codez" target="_blank" class="hover:text-blue-300 glow-link">Prat-Codez</a>
             </p>
             <p class="text-sm text-gray-400">
@@ -111,27 +77,22 @@
             </p>
         </div>
 
-        <!-- The HTML canvas element where the graph will be drawn -->
         <canvas id="graphCanvas" class="w-full h-full bg-gray-900"></canvas>
 
-        <!-- Zoom controls (buttons) -->
         <div class="absolute bottom-4 right-4 flex flex-col space-y-2">
-            <!-- Zoom In button with glow animation -->
             <button id="zoom-in-btn" 
                     class="p-3 bg-gray-700 hover:bg-gray-600 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 glow-link">
-                <!-- Plus icon for zoom in -->
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             </button>
-            <!-- Zoom Out button with glow animation -->
             <button id="zoom-out-btn" 
                     class="p-3 bg-gray-700 hover:bg-gray-600 rounded-full shadow-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 glow-link">
-                <!-- Minus icon for zoom out -->
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
             </button>
         </div>
     </div>
 
     <script>
+    document.addEventListener('DOMContentLoaded', () => {
         // Get the canvas element and its 2D drawing context
         const canvas = document.getElementById('graphCanvas');
         const ctx = canvas.getContext('2d');
@@ -142,556 +103,336 @@
         let xMax = 10;
         let yMin = -10;
         let yMax = 10;
-        const padding = 0.05; // Not currently used in drawing, but reserved for potential future padding calculations
 
         // Array to store all the equations being plotted
-        // Each object holds: id, reference to the input element, current value, color for the plot, and reference to an error message element
         let equations = []; 
 
         // Colors used for plotting different equations
-        const plotColors = ['#EF4444', '#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', '#6EE7B7']; // Tailwind color palette
+        const plotColors = ['#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', '#6EE7B7'];
 
         // Variables for handling graph panning (dragging)
-        let isPanning = false; // True when the user is dragging the graph
-        let lastPanX, lastPanY; // Stores the last mouse position during a pan
+        let isPanning = false;
+        let lastPanX, lastPanY;
 
-        // List of allowed Math functions for security when evaluating user input
-        // This prevents users from running arbitrary JavaScript code
+        // Whitelist of allowed Math functions for security
         const allowedMath = {
             'sin': Math.sin, 'cos': Math.cos, 'tan': Math.tan,
             'asin': Math.asin, 'acos': Math.acos, 'atan': Math.atan,
-            'atan2': Math.atan2, 'sqrt': Math.sqrt, 'exp': Math.exp,
-            'log': Math.log, 'abs': Math.abs, 'ceil': Math.ceil,
-            'floor': Math.floor, 'round': Math.round, 'min': Math.min,
-            'max': Math.max, 'pow': Math.pow, 'PI': Math.PI, 'E': Math.E
+            'sqrt': Math.sqrt, 'cbrt': Math.cbrt, 'exp': Math.exp,
+            'log': Math.log, 'log10': Math.log10, 'log2': Math.log2,
+            'abs': Math.abs, 'ceil': Math.ceil, 'floor': Math.floor, 
+            'round': Math.round, 'min': Math.min, 'max': Math.max, 
+            'pow': Math.pow, 'PI': Math.PI, 'E': Math.E
         };
 
-        // Helper function to calculate a "nice" step size for grid lines and axis labels
-        // This ensures grid lines are at visually appealing intervals (e.g., 1, 2, 5, 10, 0.1, 0.2, etc.)
-        function getNiceStep(min, max, numTicks) {
-            const range = max - min;
-            let roughStep = range / numTicks;
+        // ### Core Functions ###
 
-            // Determine the magnitude (power of 10) of the rough step
-            const exponent = Math.floor(Math.log10(roughStep));
-            const powerOf10 = Math.pow(10, exponent);
-
-            // Check against "nice" multiples of the power of 10
-            const niceMultiples = [1, 2, 5, 10]; 
-            let step = powerOf10; // Default step
-
-            for (let i = 0; i < niceMultiples.length; i++) {
-                if (roughStep <= niceMultiples[i] * powerOf10) {
-                    step = niceMultiples[i] * powerOf10;
-                    break;
-                }
-            }
-            return step;
-        }
-
-        // Initializes the canvas and sets up all event listeners
-        function initCanvas() {
-            // Make the canvas fill its parent container's dimensions
+        function init() {
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
 
-            // Add some default equations when the app starts
-            addEquationInput('y = x**2');
             addEquationInput('y = sin(x)');
-            addEquationInput('y = cos(x)');
+            addEquationInput('y = x^2');
+            
+            document.getElementById('add-equation-btn').addEventListener('click', () => addEquationInput());
+            document.getElementById('zoom-in-btn').addEventListener('click', () => handleZoom(0.8));
+            document.getElementById('zoom-out-btn').addEventListener('click', () => handleZoom(1.25));
 
-            // Get the "Add Equation" button and attach an event listener
-            const addButton = document.getElementById('add-equation-btn');
-            if (addButton) {
-                addButton.addEventListener('click', () => {
-                    addEquationInput(); // Call function to add a new input field
-                });
-            } else {
-                console.error("Error: 'add-equation-btn' element NOT found in the DOM!");
-            }
-
-            // Attach event listeners for zoom buttons
-            document.getElementById('zoom-in-btn').addEventListener('click', () => handleZoom(0.8)); // Zoom in (shrink range)
-            document.getElementById('zoom-out-btn').addEventListener('click', () => handleZoom(1.2)); // Zoom out (expand range)
-
-            // Event listeners for mouse-based panning
-            canvas.addEventListener('mousedown', startPan); // When mouse button is pressed down
-            canvas.addEventListener('mousemove', pan);     // When mouse moves
-            canvas.addEventListener('mouseup', endPan);       // When mouse button is released
-            canvas.addEventListener('mouseout', endPan);     // When mouse leaves the canvas area
-
-            // Event listener for window resizing to make the canvas responsive
-            window.addEventListener('resize', () => {
-                canvas.width = canvas.offsetWidth;   // Update canvas width
-                canvas.height = canvas.offsetHeight; // Update canvas height
-                drawGraph(); // Redraw the graph after resizing
+            canvas.addEventListener('mousedown', startPan);
+            canvas.addEventListener('mousemove', pan);
+            canvas.addEventListener('mouseup', endPan);
+            canvas.addEventListener('mouseout', endPan);
+            canvas.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const zoomFactor = e.deltaY < 0 ? 0.9 : 1.1;
+                handleZoom(zoomFactor, e.offsetX, e.offsetY);
             });
 
-            drawGraph(); // Initial drawing of the graph when the page loads
+            window.addEventListener('resize', () => {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                drawGraph();
+            });
+
+            setupSinglePlayGlowAnimation();
+            drawGraph();
         }
 
-        // Function to apply single-play animation on hover
-        function setupSinglePlayGlowAnimation() {
-            const glowElements = document.querySelectorAll('.glow-link');
+        function drawGraph() {
+            requestAnimationFrame(() => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawGridAndAxes();
+                
+                equations.forEach(eq => {
+                    if (eq.errorElement) eq.errorElement.textContent = '';
+                    plotEquation(eq.value, eq.color, eq.errorElement);
+                });
+                
+                emptyListMessage.classList.toggle('hidden', equations.length > 0);
+            });
+        }
+        
+        // ### Event Handlers for Panning and Zooming ###
 
-            glowElements.forEach(element => {
+        function handleZoom(factor, mouseX, mouseY) {
+            const centerX = mouseX ? toMathX(mouseX) : (xMin + xMax) / 2;
+            const centerY = mouseY ? toMathY(mouseY) : (yMin + yMax) / 2;
+
+            xMin = centerX + (xMin - centerX) * factor;
+            xMax = centerX + (xMax - centerX) * factor;
+            yMin = centerY + (yMin - centerY) * factor;
+            yMax = centerY + (yMax - centerY) * factor;
+
+            drawGraph();
+        }
+
+        function startPan(e) {
+            isPanning = true;
+            lastPanX = e.offsetX;
+            lastPanY = e.offsetY;
+            canvas.style.cursor = 'grabbing';
+        }
+
+        function pan(e) {
+            if (!isPanning) return;
+            const dx = toMathX(e.offsetX) - toMathX(lastPanX);
+            const dy = toMathY(e.offsetY) - toMathY(lastPanY);
+
+            xMin -= dx;
+            xMax -= dx;
+            yMin -= dy;
+            yMax -= dy;
+
+            lastPanX = e.offsetX;
+            lastPanY = e.offsetY;
+            drawGraph();
+        }
+
+        function endPan() {
+            isPanning = false;
+            canvas.style.cursor = 'grab';
+        }
+
+        // ### Equation Management ###
+
+        function addEquationInput(initialValue = '') {
+            const equationList = document.getElementById('equation-list');
+            const eqId = `eq-${Date.now()}`;
+            const color = plotColors[equations.length % plotColors.length];
+
+            const wrapper = document.createElement('div');
+            wrapper.id = `wrapper-${eqId}`;
+            wrapper.className = 'relative group mb-3';
+            
+            const newEquationDiv = document.createElement('div');
+            newEquationDiv.className = 'flex items-center p-2 bg-gray-700 rounded-lg shadow-sm transition duration-200 ease-in-out transform group-hover:scale-[1.02]';
+
+            const colorDot = document.createElement('span');
+            colorDot.className = 'w-4 h-4 rounded-full mr-3 ml-2 flex-shrink-0';
+            colorDot.style.backgroundColor = color;
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'flex-grow bg-transparent focus:outline-none text-gray-100 placeholder-gray-400';
+            input.placeholder = 'e.g., y = x^2';
+            input.value = initialValue;
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'ml-2 p-1 text-gray-500 hover:text-red-400 transition-colors duration-200 opacity-0 group-hover:opacity-100';
+            deleteBtn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>`;
+
+            const errorMsg = document.createElement('p');
+            errorMsg.className = 'text-red-400 text-xs mt-1 ml-9';
+
+            newEquationDiv.appendChild(colorDot);
+            newEquationDiv.appendChild(input);
+            newEquationDiv.appendChild(deleteBtn);
+            wrapper.appendChild(newEquationDiv);
+            wrapper.appendChild(errorMsg);
+            equationList.appendChild(wrapper);
+
+            const eqData = { id: eqId, input, value: initialValue, color, errorElement: errorMsg };
+            equations.push(eqData);
+
+            input.addEventListener('input', () => {
+                eqData.value = input.value;
+                drawGraph();
+            });
+
+            deleteBtn.addEventListener('click', () => {
+                equations = equations.filter(e => e.id !== eqId);
+                wrapper.remove();
+                drawGraph();
+            });
+            
+            drawGraph();
+        }
+
+        // ### Drawing & Plotting Logic ###
+
+        function drawGridAndAxes() {
+            const xStep = getNiceStep(xMin, xMax, 10);
+            const yStep = getNiceStep(yMin, yMax, 10);
+
+            ctx.strokeStyle = '#2D3748';
+            ctx.lineWidth = 0.5;
+            for (let i = Math.ceil(xMin / xStep) * xStep; i <= xMax; i += xStep) {
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(i), 0);
+                ctx.lineTo(toCanvasX(i), canvas.height);
+                ctx.stroke();
+            }
+            for (let i = Math.ceil(yMin / yStep) * yStep; i <= yMax; i += yStep) {
+                ctx.beginPath();
+                ctx.moveTo(0, toCanvasY(i));
+                ctx.lineTo(canvas.width, toCanvasY(i));
+                ctx.stroke();
+            }
+
+            ctx.strokeStyle = '#A0AEC0';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(0), 0);
+            ctx.lineTo(toCanvasX(0), canvas.height);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(0, toCanvasY(0));
+            ctx.lineTo(canvas.width, toCanvasY(0));
+            ctx.stroke();
+
+            ctx.fillStyle = '#A0AEC0';
+            ctx.font = '12px Inter';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            for (let i = Math.ceil(xMin / xStep) * xStep; i <= xMax; i += xStep) {
+                if (Math.abs(i) < 1e-9) continue;
+                const label = Number.isInteger(i) ? i : i.toFixed(getPrecision(xStep));
+                ctx.fillText(label, toCanvasX(i), toCanvasY(0) + 5);
+            }
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+            for (let i = Math.ceil(yMin / yStep) * yStep; i <= yMax; i += yStep) {
+                if (Math.abs(i) < 1e-9) continue;
+                const label = Number.isInteger(i) ? i : i.toFixed(getPrecision(yStep));
+                ctx.fillText(label, toCanvasX(0) + 5, toCanvasY(i));
+            }
+
+            if (xMin <= 0 && xMax >= 0 && yMin <= 0 && yMax >= 0) {
+                 ctx.fillText('0', toCanvasX(0) + 5, toCanvasY(0) + 12);
+            }
+        }
+
+        function plotEquation(eqStr, color, errorElement) {
+            if (!eqStr) return;
+
+            try {
+                let sanitizedStr = eqStr.replace(/\s+/g, '').replace(/\^/g, '**');
+                
+                for (const func in allowedMath) {
+                    sanitizedStr = sanitizedStr.replace(new RegExp(`\\b${func}\\b`, 'gi'), `allowedMath['${func}']`);
+                }
+
+                if (/[^a-zA-Z0-9\s()+\-*/.,='[\]_]/.test(sanitizedStr)) {
+                    throw new Error("Invalid characters in equation.");
+                }
+
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                
+                const parts = sanitizedStr.split('=');
+                if (parts.length !== 2) throw new Error("Equation must have one '='.");
+
+                const lhs = parts[0];
+                const rhs = parts[1];
+
+                if (lhs === 'y') {
+                    const func = new Function('x', 'allowedMath', `return ${rhs}`);
+                    let firstPoint = true;
+                    for (let px = 0; px <= canvas.width; px++) {
+                        const x = toMathX(px);
+                        const y = func(x, allowedMath);
+                        if (isNaN(y) || !isFinite(y)) { firstPoint = true; continue; }
+                        
+                        const py = toCanvasY(y);
+                        if (firstPoint) {
+                            ctx.moveTo(px, py);
+                            firstPoint = false;
+                        } else {
+                            ctx.lineTo(px, py);
+                        }
+                    }
+                } else if (lhs === 'x') {
+                    const func = new Function('y', 'allowedMath', `return ${rhs}`);
+                    let firstPoint = true;
+                    for (let py = 0; py <= canvas.height; py++) {
+                        const y = toMathY(py);
+                        const x = func(y, allowedMath);
+                        if (isNaN(x) || !isFinite(x)) { firstPoint = true; continue; }
+                        
+                        const px = toCanvasX(x);
+                        if (firstPoint) {
+                            ctx.moveTo(px, py);
+                            firstPoint = false;
+                        } else {
+                            ctx.lineTo(px, py);
+                        }
+                    }
+                } else {
+                     throw new Error("Equation must be in the form y = f(x) or x = f(y).");
+                }
+                
+                ctx.stroke();
+
+            } catch (e) {
+                if (errorElement) {
+                    errorElement.textContent = e.message.includes('f(x)') || e.message.includes('f(y)') 
+                        ? e.message 
+                        : `Syntax Error`;
+                }
+            }
+        }
+
+        // ### Utility Functions ###
+
+        function toCanvasX(mathX) { return (mathX - xMin) / (xMax - xMin) * canvas.width; }
+        function toCanvasY(mathY) { return canvas.height - (mathY - yMin) / (yMax - yMin) * canvas.height; }
+        function toMathX(canvasX) { return canvasX / canvas.width * (xMax - xMin) + xMin; }
+        function toMathY(canvasY) { return (canvas.height - canvasY) / canvas.height * (yMax - yMin) + yMin; }
+
+        function getNiceStep(min, max, numTicks) {
+            const range = max - min;
+            if (range === 0) return 1;
+            const roughStep = range / numTicks;
+            const exponent = Math.floor(Math.log10(roughStep));
+            const powerOf10 = Math.pow(10, exponent);
+            const niceMultiples = [1, 2, 2.5, 5, 10];
+            for (const m of niceMultiples) {
+                const step = m * powerOf10;
+                if (range / step < numTicks * 1.5) return step;
+            }
+            return niceMultiples[0] * powerOf10;
+        }
+
+        function getPrecision(step) {
+            const s = String(step);
+            return s.includes('.') ? s.split('.')[1].length : 0;
+        }
+        
+        function setupSinglePlayGlowAnimation() {
+            document.querySelectorAll('.glow-link').forEach(element => {
                 element.addEventListener('mouseenter', () => {
-                    // Remove the class first to allow re-triggering if already present
-                    element.classList.remove('animate-glow');
-                    // Force reflow to restart animation (hacky but often necessary)
-                    void element.offsetWidth; 
                     element.classList.add('animate-glow');
                 });
-
                 element.addEventListener('animationend', () => {
                     element.classList.remove('animate-glow');
                 });
             });
         }
 
-
-        // Coordinate transformation functions
-        function toCanvasX(mathX) {
-            const rangeX = xMax - xMin;
-            return ((mathX - xMin) / rangeX) * canvas.width;
-        }
-
-        // Function to convert a mathematical Y-coordinate to a canvas Y-pixel coordinate
-        // Note: Canvas Y-axis is inverted (0 is at the top)
-        function toCanvasY(mathY) {
-            const rangeY = yMax - yMin;
-            return canvas.height - ((mathY - yMin) / rangeY) * canvas.height;
-        }
-
-        // Function to convert a canvas X-pixel coordinate back to a mathematical X-coordinate
-        function toMathX(canvasX) {
-            const rangeX = xMax - xMin;
-            return (canvasX / canvas.width) * rangeX + xMin;
-        }
-
-        // Function to convert a canvas Y-pixel coordinate back to a mathematical Y-coordinate
-        function toMathY(canvasY) {
-            const rangeY = yMax - yMin;
-            return ((canvas.height - canvasY) / canvas.height) * rangeY + yMin;
-        }
-
-        // Main function to draw the grid, axes, and all equations on the canvas
-        function drawGraph() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the entire canvas
-
-            // Calculate dynamic step sizes for the grid based on the current zoom level
-            const xStep = getNiceStep(xMin, xMax, 10); // Aim for about 10 major ticks on X-axis
-            const yStep = getNiceStep(yMin, yMax, 10); // Aim for about 10 major ticks on Y-axis
-
-            // Draw grid lines
-            ctx.strokeStyle = '#2D3748'; // Set grid line color (gray-800)
-            ctx.lineWidth = 0.5; // Set grid line thickness
-
-            // Draw vertical grid lines
-            for (let i = Math.ceil(xMin / xStep) * xStep; i <= xMax; i += xStep) {
-                ctx.beginPath(); // Start a new path
-                ctx.moveTo(toCanvasX(i), 0); // Move to the top of the line
-                ctx.lineTo(toCanvasX(i), canvas.height); // Draw line to the bottom
-                ctx.stroke(); // Render the line
-            }
-
-            // Draw horizontal grid lines
-            for (let i = Math.ceil(yMin / yStep) * yStep; i <= yMax; i += yStep) {
-                ctx.beginPath(); // Start a new path
-                ctx.moveTo(0, toCanvasY(i)); // Move to the left of the line
-                ctx.lineTo(canvas.width, toCanvasY(i)); // Draw line to the right
-                ctx.stroke(); // Render the line
-            }
-
-            // Draw axes (X and Y axes) with a thicker line
-            ctx.strokeStyle = '#A0AEC0'; // Set axis color (gray-400)
-            ctx.lineWidth = 1.5; // Set axis thickness
-
-            ctx.beginPath();
-            ctx.moveTo(toCanvasX(0), 0);
-            ctx.lineTo(toCanvasX(0), canvas.height);
-            ctx.stroke(); // Draw Y-axis
-
-            ctx.beginPath();
-            ctx.moveTo(0, toCanvasY(0));
-            ctx.lineTo(canvas.width, toCanvasY(0));
-            ctx.stroke(); // Draw X-axis
-
-            // Draw axis labels (numbers on the axes)
-            ctx.fillStyle = '#A0AEC0'; // Label color
-            ctx.font = '12px Inter'; // Label font
-
-            // X-axis labels
-            ctx.textAlign = 'center'; // Align text horizontally to the center
-            ctx.textBaseline = 'top'; // Align text vertically to the top
-            for (let i = Math.ceil(xMin / xStep) * xStep; i <= xMax; i += xStep) {
-                // Skip '0' to avoid drawing it twice (once for X, once for Y)
-                if (Math.abs(i) < 0.0001) {
-                    continue;
-                }
-                // Format label based on step size (integer or decimal)
-                const label = (xStep >= 1) ? Math.round(i).toString() : i.toFixed(getPrecision(xStep));
-                ctx.fillText(label, toCanvasX(i), toCanvasY(0) + 5); // Draw label with a small offset
-            }
-
-            // Y-axis labels
-            ctx.textAlign = 'left'; // Align text horizontally to the left
-            ctx.textBaseline = 'middle'; // Align text vertically to the middle
-            for (let i = Math.ceil(yMin / yStep) * yStep; i <= yMax; i += yStep) {
-                // Skip '0' as it will be handled by the origin label
-                if (Math.abs(i) < 0.0001) {
-                    continue;
-                }
-                const label = (yStep >= 1) ? Math.round(i).toString() : i.toFixed(getPrecision(yStep));
-                ctx.fillText(label, toCanvasX(0) + 5, toCanvasY(i)); // Draw label with a small offset
-            }
-
-            // Explicitly draw '0' at the origin if it's visible within the graph bounds
-            if (xMin <= 0 && xMax >= 0 && yMin <= 0 && yMax >= 0) {
-                ctx.fillStyle = '#A0AEC0'; // Same color as other labels
-                ctx.font = '10px Inter'; // Slightly smaller font for origin
-                ctx.textAlign = 'left'; // Align to left of origin
-                ctx.textBaseline = 'top'; // Position below x-axis
-                ctx.fillText('0', toCanvasX(0) + 2, toCanvasY(0) + 2); // Small offset from origin
-            }
-
-            // Plot all equations currently stored in the 'equations' array
-            equations.forEach(eq => {
-                // Clear any previous error messages for this equation
-                if (eq.errorElement) {
-                    eq.errorElement.textContent = '';
-                }
-                plotEquation(eq.value, eq.color, eq.errorElement); // Plot the equation
-            });
-
-            // Show or hide the "No equations added yet!" message based on the number of equations
-            if (equations.length === 0) {
-                emptyListMessage.classList.remove('hidden'); // Show the message
-            } else {
-                emptyListMessage.classList.add('hidden'); // Hide the message
-            }
-        }
-
-        // Helper function to determine the number of decimal places for axis labels
-        function getPrecision(step) {
-            if (step === 0) return 0; // Avoid errors for step 0
-            // Calculate precision based on the magnitude of the step (e.g., 0.1 -> 1, 0.01 -> 2)
-            const precision = Math.max(0, -Math.floor(Math.log10(Math.abs(step))));
-            // Limit precision to a reasonable number to prevent overly long labels
-            return Math.min(precision, 6); 
-        }
-
-        // Function to plot a single equation on the canvas
-        function plotEquation(equationString, color, errorElement) {
-            if (!equationString) return; // Do nothing if the equation string is empty
-
-            ctx.strokeStyle = color; // Set the color for this equation's plot
-            ctx.lineWidth = 2; // Set the line thickness
-
-            try {
-                // Replace '^' (caret) with '**' for JavaScript's exponentiation operator
-                let cleanedEquation = equationString.replace(/\^/g, '**');
-
-                // Check if the equation is in 'y = f(x)' or 'x = f(y)' format
-                if (cleanedEquation.includes('=')) {
-                    const parts = cleanedEquation.split('=');
-                    const lhs = parts[0].trim(); // Left-hand side (e.g., 'y' or 'x')
-                    let rhs = parts[1].trim(); // Right-hand side (the expression)
-
-                    // Replace allowed math function names with 'Math.' prefix for evaluation
-                    for (const func in allowedMath) {
-                        // Use regex with word boundaries (\\b) to avoid replacing parts of variable names (e.g., 'sin' in 'sincere')
-                        rhs = rhs.replace(new RegExp(`\\b${func}\\b`, 'g'), `Math.${func}`);
-                    }
-
-                    if (lhs === 'y') {
-                        // Plot equations of the form y = f(x)
-                        // Create a new function dynamically from the string
-                        const func = new Function('x', 'return ' + rhs);
-                        ctx.beginPath(); // Start a new path for the line
-                        let firstPoint = true; // Flag to handle the first point of a continuous line
-
-                        // Iterate across each pixel column of the canvas
-                        for (let pixelX = 0; pixelX <= canvas.width; pixelX++) {
-                            const mathX = toMathX(pixelX); // Convert pixel X to math X
-                            let mathY = func(mathX); // Calculate math Y using the equation
-
-                            // If the result is not a number or is infinite, break the line
-                            if (isNaN(mathY) || !isFinite(mathY)) {
-                                firstPoint = true; 
-                                continue; // Skip this point
-                            }
-
-                            const canvasY = toCanvasY(mathY); // Convert math Y to canvas Y
-
-                            // Only draw if the point is within a reasonable buffer of the canvas height
-                            // This prevents drawing lines across large jumps (e.g., asymptotes)
-                            if (canvasY >= -1000 && canvasY <= canvas.height + 1000) { 
-                                if (firstPoint) {
-                                    ctx.moveTo(pixelX, canvasY); // Move to the first point of a new segment
-                                    firstPoint = false;
-                                } else {
-                                    ctx.lineTo(pixelX, canvasY); // Draw a line to the current point
-                                }
-                            } else {
-                                firstPoint = true; // Break the line if outside the buffer
-                            }
-                        }
-                        ctx.stroke(); // Render the plotted line
-                    } else if (lhs === 'x') {
-                        // Plot equations of the form x = f(y)
-                        // Create a new function dynamically from the string
-                        const func = new Function('y', 'return ' + rhs);
-                        ctx.beginPath(); // Start a new path
-                        let firstPoint = true;
-
-                        // Iterate across each pixel row of the canvas
-                        for (let pixelY = 0; pixelY <= canvas.height; pixelY++) {
-                            const mathY = toMathY(pixelY); // Convert pixel Y to math Y
-                            let mathX = func(mathY); // Calculate math X using the equation
-
-                            // If the result is not a number or is infinite, break the line
-                            if (isNaN(mathX) || !isFinite(mathX)) {
-                                firstPoint = true; 
-                                continue;
-                            }
-
-                            const canvasX = toCanvasX(mathX); // Convert math X to canvas X
-
-                            // Only draw if the point is within a reasonable buffer of the canvas width
-                            if (canvasX >= -1000 && canvasX <= canvas.width + 1000) { 
-                                if (firstPoint) {
-                                    ctx.moveTo(canvasX, pixelY);
-                                    firstPoint = false;
-                                } else {
-                                    ctx.lineTo(canvasX, pixelY);
-                                }
-                            } else {
-                                firstPoint = true; // Break the line if outside the buffer
-                            }
-                        }
-                        ctx.stroke(); // Render the plotted line
-                    } else {
-                        // Handle implicit equations (e.g., x^2 + y^2 = 25)
-                        // This is a basic approach that samples points and checks if they are close to zero
-                        const implicit_func = new Function('x', 'y', 'return ' + cleanedEquation.replace(/=/g, '-'));
-                        const threshold = 0.5; // How close to zero the function's value must be to be considered on the line
-
-                        ctx.beginPath();
-                        let foundFirst = false;
-
-                        // Iterate through every pixel (or a subset for performance)
-                        for (let pixelX = 0; pixelX <= canvas.width; pixelX += 1) { 
-                            for (let pixelY = 0; pixelY <= canvas.height; pixelY += 1) {
-                                const mathX = toMathX(pixelX);
-                                const mathY = toMathY(pixelY);
-                                try {
-                                    const value = implicit_func(mathX, mathY); // Evaluate the implicit function
-                                    if (Math.abs(value) < threshold) { // If the value is close to zero
-                                        if (!foundFirst) {
-                                            ctx.moveTo(pixelX, pixelY); // Move to the first point
-                                            foundFirst = true;
-                                        } else {
-                                            ctx.lineTo(pixelX, pixelY); // Draw line to subsequent points
-                                        }
-                                    } else {
-                                        foundFirst = false; // Break the line if not on the curve
-                                    }
-                                } catch (e) {
-                                    // Ignore errors for individual points (e.g., log of negative numbers)
-                                    foundFirst = false;
-                                }
-                            }
-                        }
-                        ctx.stroke(); // Render the implicit curve
-                    }
-                } else {
-                    // If no '=' is found, assume it's an expression for y = f(x)
-                    // Example: 'x**3 - x'
-                    let rhs = cleanedEquation;
-                    // Replace allowed math function names with 'Math.' prefix
-                    for (const func in allowedMath) {
-                        rhs = rhs.replace(new RegExp(`\\b${func}\\b`, 'g'), `Math.${func}`);
-                    }
-                    const func = new Function('x', 'return ' + rhs); // Create dynamic function
-                    ctx.beginPath();
-                    let firstPoint = true;
-                    for (let pixelX = 0; pixelX <= canvas.width; pixelX++) {
-                        const mathX = toMathX(pixelX);
-                        let mathY = func(mathX);
-
-                        if (isNaN(mathY) || !isFinite(mathY)) {
-                            firstPoint = true;
-                            continue;
-                        }
-
-                        const canvasY = toCanvasY(mathY);
-                        if (canvasY >= -1000 && canvasY <= canvas.height + 1000) { // Add some buffer
-                            if (firstPoint) {
-                                ctx.moveTo(pixelX, canvasY);
-                                firstPoint = false;
-                            } else {
-                                ctx.lineTo(pixelX, canvasY);
-                            }
-                        } else {
-                            firstPoint = true; // Break the line if outside buffer
-                        }
-                    }
-                    ctx.stroke();
-                }
-
-            } catch (e) {
-                // If there's an error in parsing or evaluating the equation
-                if (errorElement) {
-                    errorElement.textContent = `Error: ${e.message}`; // Display error message next to input
-                }
-                console.error("Error plotting equation:", equationString, e); // Log error to console
-            }
-        }
-
-        // Function to add a new equation input field to the left panel
-        function addEquationInput(initialValue = '') {
-            const equationList = document.getElementById('equation-list');
-            
-            // Check if the equation list container exists
-            if (!equationList) {
-                console.error("Error: 'equation-list' element not found!");
-                return;
-            }
-
-            const newEquationWrapper = document.createElement('div'); // Create a div to hold input and error message
-            const eqId = Date.now(); // Generate a unique ID for this equation
-
-            newEquationWrapper.id = `eq-wrapper-${eqId}`; // Set ID for the wrapper
-            newEquationWrapper.className = 'mb-3'; // Add margin-bottom for spacing
-
-            const newEquationDiv = document.createElement('div');
-            newEquationDiv.id = `eq-${eqId}`;
-            // Add styling for the input field container, including a subtle hover effect
-            newEquationDiv.className = 'flex items-center p-2 bg-gray-700 rounded-lg shadow-sm transition duration-200 ease-in-out transform hover:scale-[1.01]'; 
-
-            const colorDot = document.createElement('span'); // Create a colored dot to represent the equation's color
-            const color = plotColors[equations.length % plotColors.length]; // Get a color from the palette, cycling through them
-            colorDot.className = `w-4 h-4 rounded-full mr-3 ml-2 flex-shrink-0`; // Styling for the dot
-            colorDot.style.backgroundColor = color; // Set the dot's color
-
-            const input = document.createElement('input'); // Create the text input field
-            input.type = 'text';
-            input.value = initialValue; // Set initial value if provided
-            input.placeholder = 'e.g., y = x^2'; // Placeholder text
-            // Styling for the input field
-            input.className = 'flex-grow bg-gray-600 text-white placeholder-gray-400 border border-gray-500 rounded-md px-2 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out min-w-0';
-            
-            const errorSpan = document.createElement('span'); // Create a span for displaying error messages
-            errorSpan.className = 'text-red-400 text-xs mt-1 ml-2'; // Styling for the error message
-
-            // Add an event listener to the input field to redraw the graph when text changes
-            input.addEventListener('input', (e) => {
-                const eq = equations.find(item => item.id === eqId); // Find the corresponding equation object
-                if (eq) {
-                    eq.value = e.target.value; // Update the equation's value
-                    if (eq.errorElement) { 
-                        eq.errorElement.textContent = ''; // Clear any old error message
-                    }
-                    drawGraph(); // Redraw the graph
-                }
-            });
-
-            const deleteButton = document.createElement('button'); // Create a delete button for the equation
-            // Styling for the delete button, including hover effects
-            deleteButton.className = 'ml-3 p-2 bg-red-600 hover:bg-red-700 text-white rounded-full transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75';
-            // SVG icon for the delete button
-            deleteButton.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>`;
-            // Add event listener to delete the equation when clicked
-            deleteButton.addEventListener('click', () => {
-                removeEquationInput(eqId);
-            });
-
-            // Assemble the new equation input element
-            newEquationDiv.appendChild(colorDot);
-            newEquationDiv.appendChild(input);
-            newEquationDiv.appendChild(deleteButton);
-            
-            newEquationWrapper.appendChild(newEquationDiv);
-            newEquationWrapper.appendChild(errorSpan); // Add the error message span below the input
-            equationList.appendChild(newEquationWrapper); // Add the new input to the list
-
-            // Add the new equation to our 'equations' array
-            equations.push({ id: eqId, inputElement: input, value: initialValue, color: color, errorElement: errorSpan });
-            drawGraph(); // Redraw the graph immediately after adding the new equation
-        }
-
-        // Function to remove an equation input field and its plot from the graph
-        function removeEquationInput(id) {
-            equations = equations.filter(eq => eq.id !== id); // Filter out the equation to be removed
-            const eqWrapperDiv = document.getElementById(`eq-wrapper-${id}`); // Get the wrapper div
-            if (eqWrapperDiv) {
-                eqWrapperDiv.remove(); // Remove the div from the DOM
-            }
-            drawGraph(); // Redraw the graph after removing the equation
-        }
-
-        // Function to handle zooming in and out of the graph
-        function handleZoom(factor) {
-            // Calculate the current center of the graph
-            const centerX = (xMin + xMax) / 2;
-            const centerY = (yMin + yMax) / 2;
-
-            // Calculate the new range based on the zoom factor
-            const newXRange = (xMax - xMin) * factor;
-            const newYRange = (yMax - yMin) * factor;
-
-            // Update the min/max values to zoom around the center
-            xMin = centerX - newXRange / 2;
-            xMax = centerX + newXRange / 2;
-            yMin = centerY - newYRange / 2;
-            yMax = centerY + newYRange / 2;
-
-            drawGraph(); // Redraw the graph with the new zoom level
-        }
-
-        // Function to start the panning (dragging) action
-        function startPan(e) {
-            isPanning = true; // Set panning flag to true
-            lastPanX = e.clientX; // Store initial mouse X position
-            lastPanY = e.clientY; // Store initial mouse Y position
-            canvas.style.cursor = 'grabbing'; // Change cursor to indicate dragging
-        }
-
-        // Function to handle the panning (dragging) movement
-        function pan(e) {
-            if (!isPanning) return; // Do nothing if not currently panning
-
-            const dx = e.clientX - lastPanX; // Calculate change in mouse X position
-            const dy = e.clientY - lastPanY; // Calculate change in mouse Y position
-
-            // Convert pixel movement to mathematical unit movement based on current scale
-            const mathDx = dx / canvas.width * (xMax - xMin);
-            const mathDy = dy / canvas.height * (yMax - yMin); // Y-axis is inverted on canvas
-
-            // Adjust the graph's min/max values to pan the view
-            xMin -= mathDx;
-            xMax -= mathDx;
-            yMin += mathDy; // Add because canvas Y is inverted
-            yMax += mathDy;
-
-            lastPanX = e.clientX; // Update last mouse X position
-            lastPanY = e.clientY; // Update last mouse Y position
-
-            drawGraph(); // Redraw the graph to show the pan
-        }
-
-        // Function to end the panning (dragging) action
-        function endPan() {
-            isPanning = false; // Set panning flag to false
-            canvas.style.cursor = 'grab'; // Change cursor back to grab
-        }
-
-        // Initialize the application when the entire window content has loaded
-        window.onload = function() {
-            initCanvas(); // Call the main initialization function
-            setupSinglePlayGlowAnimation(); // Set up the one-time glow animation for specific elements
-        };
+        // Start the application
+        init();
+    });
     </script>
 </body>
 </html>
